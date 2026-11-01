@@ -1,11 +1,11 @@
 import { Routes, Route } from 'react-router-dom';
 import { AppShell } from '@/components/layout/AppShell';
 import { Dashboard } from '@/pages/Dashboard';
+import { TasksPage } from '@/pages/TasksPage';
 import { PlaceholderPage } from '@/pages/PlaceholderPage';
 import {
   Bot,
   GraduationCap,
-  CalendarCheck,
   BrainCircuit,
   Briefcase,
   Newspaper,
@@ -50,16 +50,7 @@ export function App() {
         />
 
         {/* 4. Tasks and Calendar */}
-        <Route
-          path="tasks"
-          element={
-            <PlaceholderPage
-              title="Tasks and Calendar"
-              description="Personal scheduling, priorities, and deadlines"
-              icon={<CalendarCheck className="w-5 h-5 text-neutral-500" />}
-            />
-          }
-        />
+        <Route path="tasks" element={<TasksPage />} />
 
         {/* 5. Skills and Learning */}
         <Route
