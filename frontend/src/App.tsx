@@ -2,6 +2,13 @@ import { Routes, Route } from 'react-router-dom';
 import { AppShell } from '@/components/layout/AppShell';
 import { Dashboard } from '@/pages/Dashboard';
 import { TasksPage } from '@/pages/TasksPage';
+import { JournalPage } from '@/pages/JournalPage';
+import { ProjectsPage } from '@/pages/ProjectsPage';
+import { ProjectDetailPage } from '@/pages/ProjectDetailPage';
+import { ProjectFormPage } from '@/pages/ProjectFormPage';
+import { HackathonsPage } from '@/pages/HackathonsPage';
+import { HackathonDetailPage } from '@/pages/HackathonDetailPage';
+import { HackathonFormPage } from '@/pages/HackathonFormPage';
 import { PlaceholderPage } from '@/pages/PlaceholderPage';
 import {
   Bot,
@@ -9,11 +16,8 @@ import {
   BrainCircuit,
   Briefcase,
   Newspaper,
-  FolderGit2,
-  Trophy,
   Dumbbell,
   Wallet,
-  BookMarked,
   BarChart3,
   Settings,
 } from 'lucide-react';
@@ -88,29 +92,17 @@ export function App() {
           }
         />
 
-        {/* 8. Projects */}
-        <Route
-          path="projects"
-          element={
-            <PlaceholderPage
-              title="Projects"
-              description="Portfolio builds, milestones, and repositories"
-              icon={<FolderGit2 className="w-5 h-5 text-neutral-500" />}
-            />
-          }
-        />
+        {/* 8. Projects Vault */}
+        <Route path="projects" element={<ProjectsPage />} />
+        <Route path="projects/new" element={<ProjectFormPage />} />
+        <Route path="projects/:id" element={<ProjectDetailPage />} />
+        <Route path="projects/:id/edit" element={<ProjectFormPage />} />
 
-        {/* 9. Hackathons */}
-        <Route
-          path="hackathons"
-          element={
-            <PlaceholderPage
-              title="Hackathons"
-              description="Upcoming competitions and team coordination"
-              icon={<Trophy className="w-5 h-5 text-neutral-500" />}
-            />
-          }
-        />
+        {/* 9. Hackathons Vault */}
+        <Route path="hackathons" element={<HackathonsPage />} />
+        <Route path="hackathons/new" element={<HackathonFormPage />} />
+        <Route path="hackathons/:id" element={<HackathonDetailPage />} />
+        <Route path="hackathons/:id/edit" element={<HackathonFormPage />} />
 
         {/* 10. Fitness and Health */}
         <Route
@@ -137,16 +129,7 @@ export function App() {
         />
 
         {/* 12. Daily Journal */}
-        <Route
-          path="journal"
-          element={
-            <PlaceholderPage
-              title="Daily Journal"
-              description="Daily reflections, gratitude, and executive logs"
-              icon={<BookMarked className="w-5 h-5 text-neutral-500" />}
-            />
-          }
-        />
+        <Route path="journal" element={<JournalPage />} />
 
         {/* 13. Analytics */}
         <Route

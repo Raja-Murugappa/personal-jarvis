@@ -18,7 +18,7 @@ class TaskService:
             query = query.filter(Task.priority == priority)
         if category:
             query = query.filter(Task.category == category)
-        return query.order_by(Task.due_date.asc().nullslast(), Task.created_at.desc()).all()
+        return query.order_by(Task.due_date.asc().nullslast(), Task.id.desc()).all()
 
     @staticmethod
     def get_task_by_id(db: Session, task_id: int) -> Optional[Task]:

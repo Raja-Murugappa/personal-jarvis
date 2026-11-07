@@ -6,4 +6,8 @@ client = TestClient(app)
 def test_health_check():
     response = client.get("/health")
     assert response.status_code == 200
-    assert response.json() == {"status": "ok"}
+    data = response.json()
+    assert data["status"] in ("ok", "degraded")
+    assert "app_version" in data
+    assert "database_reachable" in data
+    assert "migration_status" in data

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/components/ui/Toast';
 import { TaskFormDialog } from '@/components/tasks/TaskFormDialog';
+import { JournalEntryForm } from '@/components/journal/JournalEntryForm';
 import {
   X,
   Plus,
@@ -11,6 +13,8 @@ import {
   GraduationCap,
   Cpu,
   Sparkles,
+  FolderGit2,
+  Trophy,
 } from 'lucide-react';
 
 interface QuickAddModalProps {
@@ -20,6 +24,8 @@ interface QuickAddModalProps {
 
 const QUICK_ADD_ACTIONS = [
   { id: 'task', title: 'Add Task', description: 'Create a new personal or academic task', icon: CheckSquare },
+  { id: 'project', title: 'Add Project', description: 'Create a new portfolio project or showcase', icon: FolderGit2 },
+  { id: 'hackathon', title: 'Log Hackathon', description: 'Record a hackathon or competition', icon: Trophy },
   { id: 'journal', title: 'New Journal Entry', description: 'Reflect on today’s events and thoughts', icon: BookOpen },
   { id: 'expense', title: 'Log Expense', description: 'Record an expense or income entry', icon: DollarSign },
   { id: 'workout', title: 'Track Workout', description: 'Log a fitness or exercise session', icon: Dumbbell },
@@ -30,7 +36,9 @@ const QUICK_ADD_ACTIONS = [
 
 export function QuickAddModal({ isOpen, onClose }: QuickAddModalProps) {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
+  const [isAddJournalOpen, setIsAddJournalOpen] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -44,6 +52,21 @@ export function QuickAddModal({ isOpen, onClose }: QuickAddModalProps) {
     if (actionId === 'task') {
       onClose();
       setIsAddTaskOpen(true);
+      return;
+    }
+    if (actionId === 'project') {
+      onClose();
+      navigate('/projects/new');
+      return;
+    }
+    if (actionId === 'hackathon') {
+      onClose();
+      navigate('/hackathons/new');
+      return;
+    }
+    if (actionId === 'journal') {
+      onClose();
+      setIsAddJournalOpen(true);
       return;
     }
     toast('Not connected yet');
@@ -134,6 +157,12 @@ export function QuickAddModal({ isOpen, onClose }: QuickAddModalProps) {
       <TaskFormDialog
         isOpen={isAddTaskOpen}
         onClose={() => setIsAddTaskOpen(false)}
+      />
+
+      {/* Journal entry modal opened from Quick Add */}
+      <JournalEntryForm
+        isOpen={isAddJournalOpen}
+        onClose={() => setIsAddJournalOpen(false)}
       />
     </>
   );

@@ -1,7 +1,14 @@
 import { WidgetCard } from './WidgetCard';
 import { Target, Code, Cpu, FolderGit2, AlertCircle } from 'lucide-react';
+import { useProjects } from '@/hooks/useProjects';
+import { Link } from 'react-router-dom';
 
 export function CareerOverviewWidget() {
+  const { data: projects = [], isLoading } = useProjects();
+
+  const inProgressCount = projects.filter((p) => p.status === 'in_progress').length;
+  const completedCount = projects.filter((p) => p.status === 'completed').length;
+
   return (
     <WidgetCard
       title="Career Overview"
@@ -41,13 +48,22 @@ export function CareerOverviewWidget() {
         </div>
 
         {/* Project Progress */}
-        <div className="p-2.5 rounded-lg border border-border/70 bg-muted/30 flex items-center justify-between text-xs">
-          <span className="flex items-center gap-1.5 text-foreground font-medium">
-            <FolderGit2 className="w-3.5 h-3.5 text-muted-foreground" />
+        <Link
+          to="/projects"
+          className="p-2.5 rounded-lg border border-border/70 bg-muted/30 flex items-center justify-between text-xs hover:bg-muted/60 transition-colors group"
+        >
+          <span className="flex items-center gap-1.5 text-foreground font-medium group-hover:text-primary transition-colors">
+            <FolderGit2 className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary" />
             Project Progress
           </span>
-          <span className="text-muted-foreground">0 projects</span>
-        </div>
+          <span className="text-muted-foreground">
+            {isLoading
+              ? 'Loading...'
+              : projects.length === 0
+              ? '0 projects'
+              : `${projects.length} total (${inProgressCount} active, ${completedCount} done)`}
+          </span>
+        </Link>
 
         {/* Skill Gaps */}
         <div className="p-2.5 rounded-lg border border-border/70 bg-muted/30 flex items-center justify-between text-xs">

@@ -23,7 +23,15 @@ export const QUICK_ACTIONS: QuickAction[] = [
     id: 'add-project',
     label: 'Add project',
     iconName: 'FolderPlus',
-    actionType: 'toast',
+    actionType: 'navigate',
+    targetPath: '/projects/new',
+  },
+  {
+    id: 'add-hackathon',
+    label: 'Add hackathon',
+    iconName: 'Trophy',
+    actionType: 'navigate',
+    targetPath: '/hackathons/new',
   },
   {
     id: 'record-expense',

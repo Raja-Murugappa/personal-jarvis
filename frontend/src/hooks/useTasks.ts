@@ -8,7 +8,7 @@ export function useTasks(filters?: { status?: string; priority?: string; categor
   return useQuery({
     queryKey: [...TASKS_QUERY_KEY, filters],
     queryFn: () => tasksApi.list(filters),
-    retry: 1,
+    retry: 2,
   });
 }
 

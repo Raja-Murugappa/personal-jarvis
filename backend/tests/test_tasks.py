@@ -7,7 +7,6 @@ from sqlalchemy.pool import StaticPool
 from app.main import app
 from app.core.database import Base, get_db
 
-# Use an in-memory SQLite database specifically for tests so real jarvis.db is never touched
 TEST_DATABASE_URL = "sqlite:///:memory:"
 
 test_engine = create_engine(
@@ -42,7 +41,7 @@ def client(db_session):
 
 def test_create_task(client):
     payload = {
-        "title": "Study Linear Algebra",
+        "title": "  Study Linear Algebra  ",
         "description": "Review Chapter 3 eigenvalues",
         "priority": "high",
         "category": "Academics",
@@ -51,7 +50,7 @@ def test_create_task(client):
     response = client.post("/tasks", json=payload)
     assert response.status_code == 201
     data = response.json()
-    assert data["title"] == payload["title"]
+    assert data["title"] == "Study Linear Algebra"  # trimmed
     assert data["description"] == payload["description"]
     assert data["priority"] == "high"
     assert data["category"] == "Academics"
@@ -61,13 +60,30 @@ def test_create_task(client):
     assert "created_at" in data
     assert "updated_at" in data
 
+def test_create_task_empty_strings_become_null(client):
+    payload = {
+        "title": "Clean room",
+        "description": "   ",
+        "category": "",
+    }
+    response = client.post("/tasks", json=payload)
+    assert response.status_code == 201
+    data = response.json()
+    assert data["description"] is None
+    assert data["category"] is None
+
 def test_create_task_validation_error(client):
     # Missing required title
     response = client.post("/tasks", json={"priority": "high"})
     assert response.status_code == 422
+    assert "title" in response.json()["detail"].lower()
 
     # Invalid priority
     response = client.post("/tasks", json={"title": "Test", "priority": "urgent"})
+    assert response.status_code == 422
+
+    # Whitespace only title
+    response = client.post("/tasks", json={"title": "   "})
     assert response.status_code == 422
 
 def test_list_and_filter_tasks(client):
@@ -115,6 +131,7 @@ def test_update_task(client):
 def test_update_task_not_found(client):
     res = client.put("/tasks/9999", json={"title": "Missing"})
     assert res.status_code == 404
+    assert res.json().get("code") == "NOT_FOUND"
 
 def test_delete_task(client):
     create_res = client.post("/tasks", json={"title": "To Delete"})
@@ -130,3 +147,4 @@ def test_delete_task(client):
 def test_delete_task_not_found(client):
     res = client.delete("/tasks/9999")
     assert res.status_code == 404
+    assert res.json().get("code") == "NOT_FOUND"

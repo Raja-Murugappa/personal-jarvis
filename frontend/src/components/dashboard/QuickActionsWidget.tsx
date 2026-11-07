@@ -4,6 +4,7 @@ import { QUICK_ACTIONS } from '@/lib/quick-actions';
 import { useToast } from '@/components/ui/Toast';
 import { useNavigate } from 'react-router-dom';
 import { TaskFormDialog } from '@/components/tasks/TaskFormDialog';
+import { JournalEntryForm } from '@/components/journal/JournalEntryForm';
 import {
   Zap,
   CheckSquare,
@@ -14,6 +15,7 @@ import {
   FileText,
   Dumbbell,
   Sparkles,
+  Trophy,
 } from 'lucide-react';
 
 const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -25,16 +27,23 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   FileText,
   Dumbbell,
   Sparkles,
+  Trophy,
 };
 
 export function QuickActionsWidget() {
   const { toast } = useToast();
   const navigate = useNavigate();
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
+  const [isAddJournalOpen, setIsAddJournalOpen] = useState(false);
 
   const handleAction = (id: string, actionType: 'toast' | 'navigate', targetPath?: string) => {
     if (id === 'add-task') {
       setIsAddTaskOpen(true);
+      return;
+    }
+
+    if (id === 'add-journal') {
+      setIsAddJournalOpen(true);
       return;
     }
 
@@ -83,6 +92,12 @@ export function QuickActionsWidget() {
       <TaskFormDialog
         isOpen={isAddTaskOpen}
         onClose={() => setIsAddTaskOpen(false)}
+      />
+
+      {/* Journal Entry Form Dialog for Add Journal quick action */}
+      <JournalEntryForm
+        isOpen={isAddJournalOpen}
+        onClose={() => setIsAddJournalOpen(false)}
       />
     </>
   );
