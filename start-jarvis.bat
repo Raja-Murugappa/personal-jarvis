@@ -1,23 +1,20 @@
 @echo off
-title Personal JARVIS Launcher
-echo ========================================================
-echo          Starting Personal JARVIS (Local-First)
-echo ========================================================
-echo.
+setlocal enabledelayedexpansion
+title Personal JARVIS
+cd /d "%~dp0"
 
-echo [1/2] Starting Backend API Server (http://127.0.0.1:8000)...
-start "JARVIS Backend (127.0.0.1:8000)" cmd /k "cd /d "%~dp0backend" && .venv\Scripts\uvicorn.exe app.main:app --reload --host 127.0.0.1 --port 8000"
-
-echo [2/2] Starting Frontend UI Server (http://localhost:5173)...
-start "JARVIS Frontend (localhost:5173)" cmd /k "cd /d "%~dp0frontend" && npm run dev"
-
-echo.
-echo ========================================================
-echo  Both servers have been launched in separate windows!
-echo  Keep both windows open while using Personal JARVIS.
-echo.
-echo  App URL: http://localhost:5173
-echo ========================================================
-echo.
-pause
-
+where powershell >nul 2>&1
+if %ERRORLEVEL% equ 0 (
+    powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0scripts\launch.ps1"
+) else (
+    echo [ERROR] PowerShell not found. Starting servers directly...
+    pushd "%~dp0backend"
+    start "JARVIS Backend (http://127.0.0.1:8000)" cmd /k ".venv\Scripts\python.exe -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000"
+    popd
+    pushd "%~dp0frontend"
+    start "JARVIS Frontend (http://localhost:5173)" cmd /k "npm run dev"
+    popd
+    timeout /t 3 >nul
+    start http://localhost:5173
+    pause
+)

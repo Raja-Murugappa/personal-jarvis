@@ -11,10 +11,7 @@ import type { Project, ProjectInput, ProjectListItem } from '@/types/project';
 import type { Hackathon, HackathonInput, HackathonListItem } from '@/types/hackathon';
 import type { Showcase } from '@/types/showcase';
 
-const defaultApiUrl =
-  typeof window !== 'undefined' && window.location.hostname === '127.0.0.1'
-    ? 'http://127.0.0.1:8000'
-    : 'http://localhost:8000';
+const defaultApiUrl = 'http://127.0.0.1:8000';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || defaultApiUrl;
 
