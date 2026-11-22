@@ -130,3 +130,4 @@ try {
     Write-Host "All Personal JARVIS servers stopped cleanly. Goodbye!" -ForegroundColor Green
     Start-Sleep -Seconds 1
 }
+

@@ -357,3 +357,4 @@ When implementing any future slice (e.g., Academics, Skills, Finance, Fitness):
    `lucide-react` does not export social brand icons (`Github`, `Linkedin`). Use the inline SVG components from `frontend/src/components/showcase/BrandIcons.tsx` instead of adding external icon packages.
 6. **Zod Defaults vs React Hook Form**:
    When using `@hookform/resolvers/zod` with Zod schemas containing defaults or refinements, cast the resolver with `as any` (`resolver: zodResolver(schema) as any`) to prevent TypeScript parameter option mismatches.
+
